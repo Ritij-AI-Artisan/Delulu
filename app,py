@@ -1,1 +1,69 @@
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+
+# Set page title and layout
+st.set_page_config(page_title="Data Science EdTech", layout="wide")
+
+# Sidebar navigation
+st.sidebar.title("Navigation")
+page = st.sidebar.radio("Go to", ["Home", "Courses", "Tutorials", "Quiz", "Data Explorer"])
+
+# Home Page
+if page == "Home":
+    st.title("Welcome to Data Science EdTech")
+    st.write("Learn data science with interactive courses, tutorials, quizzes, and data exploration tools.")
+    st.image("https://source.unsplash.com/1000x500/?data,education", use_column_width=True)
+
+# Courses Page
+elif page == "Courses":
+    st.title("Courses")
+    st.write("### Explore our Data Science Courses")
+    courses = {
+        "Python for Data Science": "Learn Python basics, NumPy, Pandas, and visualization.",
+        "Machine Learning Fundamentals": "Understand regression, classification, and clustering techniques.",
+        "Deep Learning with TensorFlow": "Master neural networks, CNNs, and RNNs using TensorFlow.",
+        "SQL for Data Analysis": "Learn SQL queries, joins, and database management."
+    }
+    for course, desc in courses.items():
+        st.subheader(course)
+        st.write(desc)
+        st.button(f"Enroll in {course}")
+
+# Tutorials Page
+elif page == "Tutorials":
+    st.title("Tutorials")
+    st.write("Browse interactive tutorials on various data science topics.")
+    tutorial = st.selectbox("Choose a tutorial", ["Pandas Basics", "Matplotlib & Seaborn", "Feature Engineering", "Hyperparameter Tuning"])
+    st.write(f"You selected: {tutorial}")
+    st.write("Coming soon!")
+
+# Quiz Page
+elif page == "Quiz":
+    st.title("Quick Data Science Quiz")
+    question = "Which algorithm is best suited for classification?"
+    options = ["Linear Regression", "K-Means Clustering", "Decision Trees", "PCA"]
+    answer = st.radio(question, options)
+    if st.button("Submit Answer"):
+        if answer == "Decision Trees":
+            st.success("Correct! Decision Trees are used for classification.")
+        else:
+            st.error("Incorrect! Try again.")
+
+# Data Explorer Page
+elif page == "Data Explorer":
+    st.title("Data Explorer")
+    uploaded_file = st.file_uploader("Upload a CSV file", type=["csv"])
+    if uploaded_file is not None:
+        df = pd.read_csv(uploaded_file)
+        st.write("### Dataset Preview")
+        st.dataframe(df.head())
+        
+        # Data visualization
+        st.write("### Data Visualization")
+        column = st.selectbox("Select column for visualization", df.columns)
+        fig = px.histogram(df, x=column)
+        st.plotly_chart(fig)
+
+st.sidebar.write("© 2025 Data Science EdTech")
 
